@@ -1,12 +1,12 @@
 package com.foretell.jwtauthenticationapp.service;
 
 import com.foretell.jwtauthenticationapp.dto.req.RegistrationReqDto;
+import com.foretell.jwtauthenticationapp.exception.UsernameAlreadyExistsException;
 import com.foretell.jwtauthenticationapp.model.User;
-import com.foretell.jwtauthenticationapp.util.validation.ValidationStatus;
 
 public interface UserService {
 
-    ValidationStatus register(RegistrationReqDto user);
+    User register(RegistrationReqDto user) throws UsernameAlreadyExistsException;
 
     User findByUsername(String username);
 

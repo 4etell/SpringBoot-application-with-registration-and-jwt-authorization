@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -18,11 +16,14 @@ public class JwtProvider {
     @Value("$(jwt.secret)")
     private String jwtSecret;
 
+    @Value("${jwt.token.expired}")
+    private long validityInMs;
+
     public String generateToken(String username) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date validity = new Date(new Date().getTime() + validityInMs);
         return Jwts.builder()
                 .setSubject(username)
-                .setExpiration(date)
+                .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
