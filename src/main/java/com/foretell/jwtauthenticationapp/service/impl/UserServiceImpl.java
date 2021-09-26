@@ -46,11 +46,7 @@ public class UserServiceImpl implements UserService {
             List<Role> userRoles = new ArrayList<>();
             userRoles.add(roleUser);
 
-            Date nowDate = new Date();
-
             User registeredUser = new User(
-                    nowDate,
-                    nowDate,
                     usernameFromDto,
                     firstNameFromDto,
                     lastNameFromDto,

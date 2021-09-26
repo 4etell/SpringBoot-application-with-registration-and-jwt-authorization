@@ -1,5 +1,6 @@
 package com.foretell.jwtauthenticationapp.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,13 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends AbstractEntity {
 
     @Column(name = "username")
@@ -45,21 +46,5 @@ public class User extends AbstractEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
-
-    public User(@NonNull Date createdDate,
-                @NonNull Date updatedDate,
-                @NonNull String username,
-                @NonNull String firstName,
-                @NonNull String lastName,
-                @NonNull String email,
-                @NonNull String password,
-                List<Role> roles) {
-        super(createdDate, updatedDate);
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
 }
+
