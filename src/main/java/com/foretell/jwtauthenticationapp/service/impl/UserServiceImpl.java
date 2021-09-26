@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,24 +34,16 @@ public class UserServiceImpl implements UserService {
     public User register(RegistrationReqDto registrationReqDto) throws UsernameAlreadyExistsException {
 
         String usernameFromDto = registrationReqDto.getUsername();
-        String firstNameFromDto = registrationReqDto.getFirstName();
-        String lastNameFromDto = registrationReqDto.getLastName();
-        String emailFromDto = registrationReqDto.getEmail();
-        String passwordFromDto = registrationReqDto.getPassword();
 
         if (userRepo.findByUsername(usernameFromDto) == null) {
+
+            User registeredUser = convertRegistrationReqDtoToUser(registrationReqDto);
 
             Role roleUser = roleRepo.findByName("ROLE_USER");
             List<Role> userRoles = new ArrayList<>();
             userRoles.add(roleUser);
 
-            User registeredUser = new User(
-                    usernameFromDto,
-                    firstNameFromDto,
-                    lastNameFromDto,
-                    emailFromDto,
-                    passwordEncoder.encode(passwordFromDto),
-                    userRoles);
+            registeredUser.setRoles(userRoles);
 
             userRepo.save(registeredUser);
             log.info("IN register - user: {} successfully registered", registeredUser);
@@ -71,5 +62,14 @@ public class UserServiceImpl implements UserService {
         User result = userRepo.findByUsername(username);
         log.info("IN findByUsername - user: {} found by username: {}", result, username);
         return result;
+    }
+
+    private User convertRegistrationReqDtoToUser(RegistrationReqDto registrationReqDto) {
+        return new User(registrationReqDto.getUsername(),
+                registrationReqDto.getFirstName(),
+                registrationReqDto.getLastName(),
+                registrationReqDto.getEmail(),
+                passwordEncoder.encode(registrationReqDto.getPassword()),
+                null);
     }
 }
