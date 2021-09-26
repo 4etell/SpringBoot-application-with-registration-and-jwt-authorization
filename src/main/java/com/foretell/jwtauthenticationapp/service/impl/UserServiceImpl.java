@@ -37,15 +37,15 @@ public class UserServiceImpl implements UserService {
 
         if (userRepo.findByUsername(usernameFromDto) == null) {
 
-            User registeredUser = convertRegistrationReqDtoToUser(registrationReqDto);
+            User user = convertRegistrationReqDtoToUser(registrationReqDto);
 
             Role roleUser = roleRepo.findByName("ROLE_USER");
             List<Role> userRoles = new ArrayList<>();
             userRoles.add(roleUser);
 
-            registeredUser.setRoles(userRoles);
+            user.setRoles(userRoles);
 
-            userRepo.save(registeredUser);
+            User registeredUser = userRepo.save(user);
             log.info("IN register - user: {} successfully registered", registeredUser);
 
             return registeredUser;
